@@ -1,32 +1,32 @@
 // Define the MEMORY module
 module MEMORY {
-    input [15:0] addr;          // 16-bit address input
-    input [7:0] data_in;        // 8-bit data input
-    output [7:0] data_out;      // 8-bit data output
-    input read_write;           // Control signal for read/write
+    input [15:0] addr;
+    input [7:0] data_in;
+    output [7:0] data_out;
+    input read_write; 
 
-    reg [7:0] memory[0:255];    // Declare 256-byte memory array
+    reg [7:0] memory[0:255];    // 256-byte 
 
     always {
         if (read_write) {
-            memory[addr] <= data_in;  // Write operation
+            memory[addr] <= data_in;  // W
         } else {
-            data_out <= memory[addr]; // Read operation
+            data_out <= memory[addr]; // R
         }
     }
 }
 
 // Define the PIPELINED_CPU module
 module PIPELINED_CPU {
-    input clk, reset;            // Clock and reset inputs
-    output [15:0] pc;           // Program counter output
+    input clk, reset; 
+    output [15:0] pc;
 
     // FETCH stage
     stage FETCH {
         input clk;
         output [7:0] instr;     // Instruction output
 
-        instr <= memory[pc];    // Fetch instruction from memory
+        instr <= memory[pc];    // Fetch 
     }
 
     // DECODE stage
@@ -49,7 +49,7 @@ module PIPELINED_CPU {
             case (opcode) {
                 4'b0000: result = operand + 1;   // Increment
                 4'b0001: result = operand - 1;   // Decrement
-                // Additional opcode operations can be added here
+                // Additional opcode operations TPD
             }
         }
     }
@@ -62,44 +62,44 @@ module PIPELINED_CPU {
     }
 }
 
-// Additional utility functions or modules can be added here
+// Additional utility functions or modules TBD
 
-// Example of a simple adder module
+// adder module
 module ADDER {
-    input [7:0] a, b;           // 8-bit inputs
-    output [8:0] sum;           // 9-bit output (to accommodate carry)
+    input [7:0] a, b;
+    output [8:0] sum;
 
     always {
-        sum <= a + b;           // Add the inputs
+        sum <= a + b;
     }
 }
 
-// Example of a multiplexer
+//  multiplexer module
 module MUX {
-    input [7:0] a, b;           // 8-bit inputs
-    input sel;                  // Select signal
-    output [7:0] out;          // 8-bit output
+    input [7:0] a, b;
+    input sel;
+    output [7:0] out;
 
     always {
         if (sel) {
-            out <= b;           // Select input b
+            out <= b; 
         } else {
-            out <= a;           // Select input a
+            out <= a;
         }
     }
 }
 
-// Example of a flip-flop
+// flip-flop module
 module D_FF {
-    input clk, reset;           // Clock and reset inputs
-    input d;                   // Data input
-    output reg q;              // Data output
+    input clk, reset;           
+    input d;                   
+    output reg q;              
 
     always @(posedge clk or posedge reset) {
         if (reset) begin
-            q <= 0;             // Reset output
+            q <= 0;             
         end else begin
-            q <= d;             // Capture data on clock edge
+            q <= d;             
         end
     }
 }
