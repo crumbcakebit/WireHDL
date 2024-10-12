@@ -103,3 +103,53 @@ module D_FF {
         end
     }
 }
+
+
+
+// testing grounds
+
+// Test Scenario for MEMORY and PIPELINED_CPU
+module TEST {
+
+    input clk, reset;
+    output [7:0] test_result;
+
+    MEMORY mem_inst (
+        .addr(16'h0000), 
+        .data_in(8'h05), 
+        .data_out(),     
+        .read_write(1)  
+    );
+
+  
+    PIPELINED_CPU cpu_inst (
+        .clk(clk),
+        .reset(reset),
+        .pc()
+    );
+
+
+    initial begin
+       
+        reset = 1; clk = 0;
+        #10 reset = 0;
+
+    
+        mem_inst.data_in = 8'h05;  
+        mem_inst.addr = 16'h0000; 
+        mem_inst.read_write = 1;    
+        #10;                        
+
+
+        mem_inst.read_write = 0;     
+        #10;                         
+        test_result = mem_inst.data_out; 
+
+
+
+        #10;
+
+ 
+        $display("Test Result: %d", test_result);
+    }
+}
