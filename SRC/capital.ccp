@@ -1,27 +1,22 @@
+#include <fstream>
+#include <sstream>
 #include "lexer.h"
 #include "parser.h"
-#include "simulator.h"
-#include <fstream>
-#include <iostream>
+// other here
 
 int main() {
-    std::ifstream file("tests/prim.hd1");  
-    if (!file.is_open()) {
-        std::cerr << "well that didn't work!??" << std::endl;
+    std::ifstream file("test/prim1.hd1"); 
+    if (!file) {
+        std::cerr << "Error opening file." << std::endl;
         return 1;
     }
 
-    //Lexical analysis moment
-    Lexer lexer(file);
-    std::vector<Token> tokens = lexer.tokenize();
+    std::stringstream buffer;
+    buffer << file.rdbuf(); 
+    std::string source = buffer.str();
 
-    //Parsing moment
-    Parser parser(tokens);
-    AST* ast = parser.parse();
-
-    //Simulation moment
-    Simulator simulator;
-    simulator.run(ast);
-
+    Lexer lexer(source); 
+   
     return 0;
 }
+
