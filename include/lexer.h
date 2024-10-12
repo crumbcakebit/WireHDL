@@ -33,6 +33,8 @@ private:
 
     std::string readIdentifier();
     std::string readNumber();
+    char currentChar() const;
+    void advance();
 };
 
 #endif

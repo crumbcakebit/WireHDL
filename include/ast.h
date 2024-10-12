@@ -1,5 +1,4 @@
-//astdeeznuts
-
+// ast.h
 #ifndef AST_H
 #define AST_H
 
@@ -12,14 +11,28 @@ public:
     virtual ~ASTNode() = default;
 };
 
-class ModuleNode : public ASTNode {
+class InputNode : public ASTNode {
 public:
-    ModuleNode(const std::string& name);
-    void addInput(std::unique_ptr<ASTNode> input);
+    explicit InputNode(const std::string& name) : inputName(name) {}
+    // Other member functions...
 
 private:
-    std::string name;
-    std::vector<std::unique_ptr<ASTNode>> inputs;
+    std::string inputName;
 };
 
-#endif
+class ModuleNode : public ASTNode {
+public:
+    explicit ModuleNode(const std::string& name) : moduleName(name) {}
+
+    void addInput(std::unique_ptr<ASTNode> input) { // Accepts ASTNode
+        inputs.push_back(std::move(input));
+    }
+
+    // Other member functions...
+
+private:
+    std::string moduleName;
+    std::vector<std::unique_ptr<ASTNode>> inputs; // Store inputs as unique_ptr to ASTNode
+};
+
+#endif // AST_H
