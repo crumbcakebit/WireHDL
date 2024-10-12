@@ -1,22 +1,27 @@
 #include "lexer.h"
 #include "parser.h"
 #include "simulator.h"
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 int main() {
-    std::ifstream file("tests/testcases.hd1");
-    std::string sourceCode((std::istreambuf_iterator<char>(file)),
-                            std::istreambuf_iterator<char>());
-
-    Lexer lexer(sourceCode);
-    Parser parser(lexer);
-    std::unique_ptr<ASTNode> ast = parser.parse();
-
-    if (ast) {
-        Simulator simulator;
-        simulator.simulate(*static_cast<ModuleNode*>(ast.get()));
+    std::ifstream file("tests/prim.hd1");  
+    if (!file.is_open()) {
+        std::cerr << "well that didn't work!??" << std::endl;
+        return 1;
     }
+
+    //Lexical analysis moment
+    Lexer lexer(file);
+    std::vector<Token> tokens = lexer.tokenize();
+
+    //Parsing moment
+    Parser parser(tokens);
+    AST* ast = parser.parse();
+
+    //Simulation moment
+    Simulator simulator;
+    simulator.run(ast);
 
     return 0;
 }
